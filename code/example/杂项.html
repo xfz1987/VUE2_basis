@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>杂项</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>杂项</h1>
+	<div id="app">
+		<hello></hello>
+		<world></world>
+	</div>
+	
+	<script>
+		Vue.component('hello',{
+			template: '<div>$(this.$parent.message) 全局化注册组件</div>',
+			delimiters: ['$(',')']
+			//改变纯文本插入分隔符。 这个选择只有在独立构建时才有用，用于服务端对于{{}}冲突
+		});
+		var worldT = {
+			name: 'lalala',
+			template: '<div>{{this.$parent.message}} 局部注册的组件</div>'
+		};
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				message: 'hello vue!'
+			},
+			components: {
+				'world': worldT
+			}
+		});	
+	</script>
+</body>
+</html>

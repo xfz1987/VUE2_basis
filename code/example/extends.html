@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>extends</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>extends : 扩展</h1>
+	<div id="app">
+		{{ message }}
+		<p><button @click="add">+</button></p>
+	</div>
+	<h2>
+		生命周期执行顺序:1.全局混入2.扩展的3.混入的4.构造器的<br>
+		方法和数据:数据名相同，最终都会被构造器覆盖<br>
+		测试：推荐使用扩展，开发: 推荐使用混入
+	</h2>
+
+	<script>
+		//全局混入
+		Vue.mixin({
+			created: function(){
+	    		console.log('I am global mixined life');
+	    	}
+		});
+
+	    var a = {
+	    	data: {
+	    		message : 'minxins'
+	    	},
+	    	created: function(){
+	    		console.log('I am mixined life');
+	    	},
+	    	methods: {
+	    		add: function(){
+					console.log('I am added by mixined');
+				}
+	    	}
+	    };
+
+	    var b = {
+	    	created: function(){
+	    		console.log('I am extended life');
+	    	},
+	    	methods: {
+	    		add: function(){
+					console.log('I am added by extended');
+				}
+	    	}
+	    }
+
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				message: 'hello vue!'
+			},
+			methods: {
+				add: function(){
+					console.log('I am added by constructor');
+				}
+			},
+			created: function(){
+	    		console.log('I am constructor\'s life');
+	    	},
+	    	extends: b,//扩展哪个对象，只支持扩展一次
+			mixins: [a]
+		});	
+	</script>
+</body>
+</html>

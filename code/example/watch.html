@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>watch</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>watch : 检查数据控制</h1>
+	<h2>满100减5元，满200减10元，300元以上打8折</h2>
+	<div id="app">
+		<p>苹果</p>
+		<p>购买数量:{{ n }}，单价: {{ price }}</p>
+		<p>￥ {{ total }}</p>
+		<p><button @click="add">+</button><button @click="jian">-</button></p>
+	</div>
+	
+	<script>
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				n: 1,
+				price: 25,
+				total: 25
+			},
+			methods:{
+				add: function(){
+					this.n++;
+				},
+				jian: function(){
+					this.n--;
+				}
+			}
+			// ,
+			// watch:{
+			// 	n: function(newVal,oldVal){
+			// 		if(newVal < 1){
+			// 			this.n = 1;
+			// 		}
+			// 		console.log(oldVal);
+			// 		console.log(newVal);
+			// 	}
+			// }
+		});	
+
+		vw.$watch('n',function(newVal,oldVal){
+			if(newVal < 1) this.n = 1;
+			this.total = newVal * this.price;
+		});
+		vw.$watch('total',function(newVal,oldVal){
+			if(newVal >= 100 && newVal < 200){
+				this.total = newVal - 5;
+			}else if(newVal >= 200 && newVal < 300){
+				this.total = newVal - 10;
+			}else if(newVal > 300){
+				this.total *= 0.8;
+			}
+		});
+	</script>
+
+</body>
+</html>

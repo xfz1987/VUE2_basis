@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>基本用法</title>
+</head>
+<body>
+	<h1 style="color:red;">声明渲染</h1>
+	<div id="app">
+	  <h1>{{message}}</h1>
+	  
+	  <h1 style="color:red;">v-model数据双向绑定</h1><!--  -->
+	  <input type="text" class="input-1" v-model="message">
+	  
+	  <h1 style="color:red;">v-for循环列表</h1>
+	  <ul>
+		<li v-for="(job,index) in jobs">
+			{{job.title}}
+			<!-- 删除 vue2.0 传参数为 index，index为v-for时获得的-->
+			<button v-on:click="delJob(index)" style="background:red;margin-left:50px;">delete</button>
+		</li>
+	  </ul>
+	  <!-- v-on:绑定事件，为了防止表单提交，.prevent -->
+	  <form action="#" v-on:submit.prevent="addJob(newJob)">
+	  	<input type="text" placeholder="add a job" v-model="newJob.title">
+	  	<button type="submit">Add</button>
+	  </form>
+	</div>
+
+	<h1 style="color:red;">属性绑定</h1>
+	<div class="app-2">
+		<!-- v-bind:绑定属性 -->
+		<span v-bind:title="status">bind a attribute</span>
+	</div>
+	
+	<h1 style="color:red;">条件v-if</h1>
+	<div id="app-3">
+		<p v-if="seen">Now you can see me</p>
+		
+		<h1 style="color:red;">显示v-show</h1>
+		<p v-show="seen">Now you can see me</p>
+		<h2 style="color:green">v-if与v-show的区别：v-if="false"是把dom节点remove掉，而v-show="false"则是把dom隐藏掉</p>
+	</div>
+
+
+	<script src="vue.js"></script>
+	<script>
+		var app = new Vue({
+			el: '#app',
+			data: {
+				message: 'Hello Vue!',
+				jobs:[
+					{title: 'diver'}
+				],
+				newJob:{title:''}
+			},
+			methods: {
+				//addJob:function(newJob){}
+				//es6写法
+				addJob(newJob){
+					this.jobs.push(newJob);
+					this.newJob = {title:''};
+				},
+				delJob(index){
+					this.jobs.splice(index,1);
+				}
+		
+			}
+		});
+
+		var app2 = new Vue({
+			el: '.app-2',
+			data: {
+				status: 'working'
+			}
+		});
+
+		var app3 = new Vue({
+			el: '#app-3',
+			data: {
+				seen: false
+			}
+		});
+	</script>
+</body>
+</html>

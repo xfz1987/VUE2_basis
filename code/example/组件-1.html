@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>组件-1</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>组件-1 component</h1>
+	<div id="app">
+		<my-hello></my-hello>
+		<world></world>
+		<tpl></tpl>
+	</div>
+	
+	<div id="app1">
+		<my-hello></my-hello>	
+	</div>
+
+	<template id="tpl">
+		<div>template -&gt; &lt;tpl&gt;</div>
+	</template>
+
+	<hello>没有作用，因为没有在作用域里</hello>
+	<h2>对于自定义标签名规范: 小写，并且包含一个短杠</h2>
+	<script>
+		//全局注册组件，影响所有作用域下的hello
+		Vue.component('my-hello',{
+			template: '<div>全局注册的 -&gt; &lt;my-hello&gt;</div>'
+		});
+
+	    var worldWord = {
+	    	template: '<div>局部注册的 -&gt; &lt;word&gt;</div>'
+	    }
+
+	   	Vue.component('tpl',{
+			template: '#tpl',
+		});
+
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				
+			},
+			components: {
+				'world': worldWord
+			}
+		});
+
+		var vw1 = new Vue({
+			el: '#app1',
+			data:{}
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>slot</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>内置组件 - slot 插槽: 标签的内容扩展，通过标签传递内容到模板</h1>
+	<h3>
+		<p>应用场景</p>
+		<p>1.组件不知道它的挂载点会有什么内容。挂载点的内容是由该的父组件决定的</p>
+		<p>2.组件很可能有它自己的模版</p>
+		<p>原理</p>
+		<p>为了让组件可以组合，我们需要一种方式来混合父组件的内容与子组件自己的模板。
+		   这个过程被称为 内容分发 &lt;slot&gt; 元素作为原始内容的插槽
+		</p>
+		<p>作用域：分发内容是在父组件作用域内编译</p>
+		<p>单个Slot</p>
+		<p>
+			1.除非子组件模板包含至少一个 <slot> 插口，否则父组件的内容将会被丢弃<hr>
+			2.当子组件模板只有一个没有属性的 slot 时，父组件整个内容片段将插入到 slot 所在的 DOM 位置，并替换掉 slot 标签本身
+		</p>
+		<p>具名slot</p>
+		<p>&lt;slot&gt; 元素可以用一个特殊的属性 name 来配置如何分发内容,多个 slot 可以有不同的名字。具名 slot 将匹配内容片段中有对应 slot 特性的元素</p>
+		<p>作用域插槽</p>
+		<p>一种特殊类型的插槽，用作（可以传入数据的）可重用模板,而不是已渲染元素</p>
+		<p>在子组件中，只需将数据传递到插槽，就像你将 prop 传递给组件一样</p>
+		<p>在父级中，具有特殊属性 scope 的 template 元素，表示它是作用域插槽的模板。scope 的值对应一个临时变量名，此变量接收从子组件中传递的 prop 对象：</p>
+	</h3>
+	<hr>
+	<div id="app">
+		<sig>
+			<span slot="t1">{{ t1 }}</span>
+		</sig>
+		<hr>
+		<div>
+  			<h1>我是父组件的标题</h1>
+  			<my-child>
+    			<p>这是一些初始内容</p>
+    			<p>这是更多的初始内容</p>
+  			</my-child>
+		</div>
+		<hr>
+		<good v-for="g in goodList">
+			<span slot="name">{{ g.nameAddr }}</span>
+			<span slot="num">{{ g.count }}</span>
+		</good>
+		<hr>
+		<div class="parent">
+  			<child>
+    			<template scope="papi">
+      				<span>hello from parent</span>
+      				<span>{{ papi.text }}</span>
+    			</template>
+  			</child>
+		</div>
+	</div>
+	<template id="demo">
+		<p>
+			名称：<slot name="name"></slot>
+			数量：<slot name="num"></slot>
+		</p>
+	</template>
+	
+	<template id="d1">
+		<p>我就是我</p>
+	</template>
+
+	<template id="dd">
+		<div>
+  			<h2>我是子组件的标题</h2>
+  			<slot>
+    			只有在没有要分发的内容时才会显示。
+  			</slot>
+		</div>
+	</template>
+
+	<template id="son">
+		<div class="child">
+  			<slot :text="test"></slot>
+		</div>
+	</template>
+
+
+	<script>
+		var sigs = {
+			template: '#d1'
+		}
+
+		var tiks = {
+	    	template: '#dd'
+	    };
+
+	    var goods = {
+	    	template: '#demo'
+	    };
+
+	    var childs = {
+	    	template: '#son',
+	    	data: function(){
+	    		return {
+	    			test: '123'
+	    		}
+	    	}
+	    	//props: ['text']
+	    }
+
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				goodList: [
+					{nameAddr: 'pen',count: 10},
+					{nameAddr: 'car',count: 1}
+				],
+				t1: 'Jack'
+			},
+			components: {
+				'good': goods,
+				'sig': sigs,
+				'my-child' : tiks,
+				'child': childs
+			}
+		});
+
+	</script>
+</body>
+</html>

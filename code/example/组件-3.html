@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>component 组件-3</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>component 组件-3 props建立组件关系</h1>
+	<h2>父子组件关系 - 一层一层的嵌套关系
+		父组件通过props向下传递数据给子组件
+	</h2>
+
+	<div id="app">
+		<father></father>
+	</div>
+	
+	<script>
+		var sonWord = {
+			template: '<div>this is son, my father\'s name is {{ kk }}</div>',
+			props: ['kk']
+		};
+		var fatherWord = {
+			template: `<div>
+				<p>this is father, his name is <span style="color:pink">{{ name }}</span> </p>
+				<son :kk="name"></son>
+			</div>`,
+			data: function(){
+				return {name: 'gzf'}
+			},
+			components: {
+				'son': sonWord
+			},
+
+		};
+		var vw = new Vue({
+			el: '#app',
+			data: {
+
+			},
+			components: {
+				'father': fatherWord
+			}
+		});	
+	</script>
+</body>
+</html>

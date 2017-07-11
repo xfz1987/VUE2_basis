@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>v-on</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>v-on: 可以简写为@，例如v-on:click="fn" => @click="fn" </h1>
+	<div id="app">
+		<p>{{a}}</p>
+		<p>
+			<!-- <button v-on:click="a++">+</button> -->
+			<button v-on:click="add">+</button>
+			<button @click="struct">-</button>
+		</p>
+		<p>
+			<!-- 回车加a, esc 清零 -->
+			<input type="text" @keyup.enter="onEnter" @keyup.27="onEsc" v-model="b">
+		</p>
+		<hr>
+		<button @click="say('Hi')">say</button>
+
+		<h3>事件修饰符</h3>
+		<!-- 阻止单击事件冒泡 -->
+		<a v-on:click.stop="doThis"></a>
+		<!-- 提交事件不再重载页面 -->
+		<form v-on:submit.prevent="onSubmit"></form>
+		<!-- 添加事件侦听器时使用事件捕获模式 -->
+		<div v-on:click.capture="doThis"></div>
+		<!-- 只当事件在该元素本身（而不是子元素）触发时触发回调 -->
+		<div v-on:click.self="doThat">
+			<button @click.self.stop="test"></button>
+		</div>
+		<!-- 修饰符可以串联 -->
+		<a v-on:click.stop.prevent="doThat"></a>
+		<!-- 只有一次 -->
+		<a v-on:click.once="doThis"></a>
+	</div>
+	<script>
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				a: 10,
+				b: 0
+			},
+			methods: {
+				add(event){
+					this.a++;
+					//alert(event.target.tagName);
+				},
+				struct(){
+					if(this.a > 1) this.a--;
+				},
+				onEnter(){
+					this.a = this.a + parseInt(this.b);
+				},
+				onEsc(){
+					this.a = 0;
+					this.b = 0;
+				},
+				say(msg){
+					alert(msg);
+				}
+			}
+		});
+	</script>
+
+	<h3>绑定自定义事件</h3>
+	<h3>$on(eventName) 监听事件 | $emit(eventName) 触发事件</h3>
+	<div id="app1">
+		<p>{{ total }}</p>
+		<button-cuounter @add="inTotal"></button-cuounter>
+		<button-cuounter @add="inTotal"></button-cuounter>
+	</div>
+	<script>
+		Vue.component('button-cuounter',{
+			template: '<button @click="increment">{{ counter }}</button>',
+			data: function(){
+				return {counter:0};
+			},
+			methods: {
+				increment: function(){
+					++this.counter;
+					this.$emit('add');
+				}
+			}
+		});
+		var vw1 = new Vue({
+			el: '#app1',
+			data: {
+				total: 0
+			},
+			methods: {
+				inTotal: function(){
+					++this.total;
+				}
+			}
+		});
+	</script>
+</body>
+</html>

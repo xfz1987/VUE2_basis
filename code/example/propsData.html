@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>propsData</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>propsData 用于开发环境，生产webpack有全局的变量</h1>
+	<h2>propsData用于扩展方式的传值</h2>
+	<header></header>
+	
+	<script>
+		var my_header = Vue.extend({
+			template: '<p>{{ a }}</p>',
+			data: function(){
+				return {
+					message: 'this is my header'
+				}
+			},
+			props: ['a']
+		});
+
+		new my_header({
+			propsData: {
+				a: 1
+			}
+		}).$mount('header');
+	</script>
+</body>
+</html>

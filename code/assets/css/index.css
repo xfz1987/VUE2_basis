@@ -1,0 +1,6 @@
+body{padding:15px;}
+h1{color:red;border-bottom:1px solid red;padding-bottom:10px;}
+a.mp{display:block;padding-left:20px;margin-bottom:10px;color:#555;font-size:16px;text-decoration:none;}
+a.mp:hover{background:black;color:#fff;}
+h2{border:1px solid #ddd;padding:10px;color:green;}
+ul{list-style:none;}

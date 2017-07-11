@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>v-if & v-else</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>v-if & v-else 判断是否加载(表示dom结构中有没有该节点)</h1>
+	<div id="app">
+		<div v-if="ok">原来是真的</div>
+		<div v-else>原来是假的</div>
+		
+		<div v-if="ok2">2是真的</div>
+		<div v-else>2是假的</div>
+		<hr>
+		
+		<p>{{num}}</p>
+		<p v-if="num>0.5">大于0.5</p>
+		<p v-else>小于0.5</p>
+
+		<template v-if="loginType === 'username'">
+			<label>username:</label>
+			<input type="text" placeholder="Enter your username">
+		</template>
+		<template v-else>
+			<label>email:</label>
+			<input type="text" placeholder="Enter your email">
+		</template>
+		<button @click="toggle">Toggle login type</button>
+
+		<h3>上面的例子切换 loginType 不会删除用户已经输入的内容，两个模版由于使用了相同的元素，input 会被复用，仅仅是替换了他们的 placeholder，为了解决我们给他们分别设置不同值的key属性</h3>
+		<template v-if="loginType2 === 'username'">
+			<label>username:</label>
+			<input type="text" placeholder="Enter your username" key="a">
+		</template>
+		<template v-else>
+			<label>email:</label>
+			<input type="text" placeholder="Enter your email" key="b">
+		</template>
+		<button @click="toggle2">Toggle login type</button>
+	</div>
+
+	<h2>v-if的优点:根据条件选择要加载的DOM，减轻浏览器渲染的负担</h2>
+	
+	<h1>当与v-for一起使用时(它们共存于同一节点上时)，v-for具有比v-if更高的优先级,这意味着v-if将分别在循环的每次迭代上运行，当只想要渲染某些部分项时的节点非常游泳</h1>
+	<div id="appn">
+		<ul>
+			<li v-for="todo in todos" v-if="!todo.isComplete">{{ todo.work }}</li>
+		</ul>
+	</div>
+
+
+	<script>
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				ok: true, //true则在dom结构中加载，false则不加载
+				ok2: true,
+				num: Math.random(),
+				loginType: 'username',
+				loginType2: 'username'
+
+			},
+			methods: {
+				toggle: function(){
+					this.loginType = this.loginType === 'username' ? 'email' : 'username';
+				},
+				toggle2: function(){
+					this.loginType2 = this.loginType2 === 'username' ? 'email' : 'username';
+				}
+			}
+		});	
+
+		var vm = new Vue({
+			el: '#appn',
+			data: {
+				todos: [
+					{work: '工程1', isComplete: true},
+					{work: '工程2', isComplete: false},
+					{work: '工程3', isComplete: true}
+				]
+			}
+		});
+	</script>
+</body>
+</html>

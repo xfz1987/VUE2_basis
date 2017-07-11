@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>v-show</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>v-show 判断是否显示(display:none)</h1>
+	<div id="app">
+		<p v-show="seen">我显示了</p>
+		<h3>
+			v-if有更高的切换消耗，而v-show有更高的初始渲染消耗<br>
+			因此，如果需要频繁切换使用 v-show 较好，如果在运行时条件不大可能改变则使用 v-if 较好。
+		</h3>
+		<ul v-if="list.length!=0">
+			<li v-for="item in list">
+				<span>{{ item.name }}</span>
+				<span>{{ item.job }}</span>
+				<h1>{{ obj.num }}</h1>
+			</li>
+		</ul>
+	</div>
+	
+	<script>
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				seen: true,
+				list: [
+					{name:'jack',job:'worker'},
+					{name:'marray',job:'mananger'}
+				],
+				obj:{}
+			}
+		});	
+
+		//var OBJ = {num:1}
+	</script>
+</body>
+</html>

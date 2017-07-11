@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Vue.extend 扩展</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>Vue.extend 扩展</h1>
+	<div id="header"></div>
+	
+	<div id="footer"></div>
+	<h2>Vue.extend主要应用在页面的头部/底部，每个页面都有公共的头部，那么头部文件单独做成一个文件，每个页面都引入它
+	<span style="color:red;">注意：挂载只能挂在一些无属性的标签实体，因为属性传送不到挂在内容里面进行计算，所以还是建议使用组件的方式</span>
+	</h2>
+	
+	<script>
+		var header_common = Vue.extend({
+			template: '<p>{{message}}</p>',
+			data: function(){
+				return {
+					message: 'Hello , I am a header'
+				}
+			}
+		});
+
+		//将头部挂载到页面
+		new header_common().$mount('#header');
+
+		//写法二
+		var footer = Vue.extend({
+			data: function(){
+				return {
+					message: 'Hello , I am a footer'
+				}
+			}
+		});
+		var footer_common = new footer({
+			template: '<div>{{ message }}</div>'
+		});
+
+		footer_common.$mount('#footer');
+	</script>
+</body>
+</html>

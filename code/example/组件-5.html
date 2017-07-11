@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>组件-5 重点</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>组件里面的data</h1>
+	<h3>注册组件时,data 必须是函数,而不能像构造器里面定义data那样</h3>
+	<div id="app1">
+		<ab></ab>
+		<ab></ab>
+		<ab></ab>
+	</div>
+	<h3>由于这三个组件共享了同一个 data ， 因此增加一个 counter 会影响所有组件一个变其他都变</h3>
+	<script>
+		var myData = {counter:0};
+		Vue.component('ab',{
+			template: '<button @click="++counter">{{ counter }}</button>',
+			//为每一个组件返回了同一个对象引用
+			data: function(){
+				return myData;
+			}
+		});
+		var vm = new Vue({el: '#app1'});
+	</script>
+
+	<h3 style="color:blue;">解决办法:为每个组件返回新的 data 对象</h3>
+	<div id="app11">
+		<cd></cd>
+		<cd></cd>
+		<cd></cd>
+	</div>
+	<script>
+		Vue.component('cd',{
+			template: '<button @click="++counter">{{ counter }}</button>',
+			data: function(){
+				return {counter:0};
+			}
+		});
+		new Vue({el: '#app11'});
+	</script>
+	
+	<!--             构成组件                                       -->
+	<h1>构成组件</h1>
+	<h2>
+		父子组件关系总结: props down,events up <br>
+		父组件通过props向下传递数据给子组件，子组件通过events向上给父子组件传递消息
+	</h2>
+
+	<!--             自定义事件                                       -->
+	<h1>自定义事件</h1>
+	<h3>父组件是使用 props 传递数据给子组件，但如果子组件要把数据传递回去,应该使用 自定义事件</h3>
+	<h3 style="color:blue;">使用 $on(eventName) 监听事件<br>使用 $emit(eventName) 触发事件<br>父组件可以在使用子组件的地方直接用 v-on 来监听子组件触发的事件</h3>
+	<div id="app2">
+		<p>{{total}}</p>
+		<my-button @increment="incrementTotal"></my-button>
+		<my-button @increment="incrementTotal"></my-button>
+	</div>
+	<h3>子组件已经和它外部完全解耦了。它所做的只是触发一个父组件关心的内部事件</h3>
+	<script>
+		new Vue({
+			el: '#app2',
+			data: {
+				total : 0
+			},
+			methods: {
+				incrementTotal: function(){
+					++this.total;
+				}
+			},
+			components: {
+				'my-button': {
+					template: '<button @click="add">{{ counter }}</button>',
+					data: function(){
+						return {counter:0};
+					},
+					methods: {
+						add: function(){
+							++this.counter;
+							this.$emit('increment');
+						}
+					}
+				}
+			}
+		});
+	</script>
+
+	<h1>使用自定义事件的表单输入组件：货币输入</h1>
+<!-- 	<div id="app21">
+		<curren`cy-input label="Price" v-model="price"></currency-input>
+		<currency-input label="Shipping" v-model="shipping"></currency-input>
+		<currency-input label="Handling" v-model="handling"></currency-input>
+		<currency-input label="Discount" v-model="discount"></currency-input>
+		<p>Total: ${{ total }}</p>
+	</div>
+	<script>
+		Vue.component('currency-input',{
+			template: '\
+    			<div>\
+    			  	<label v-if="label">{{ label }}</label>\
+    			  	$\
+    			  	<input\
+    			  	  ref="input"\
+    			  	  :value="value"\
+    			  	  @input="updateValue($event.target.value)"\
+    			  	  @focus="selectAll"\
+    			  	  @blur="formatValue"\
+    			  	>\
+    			</div>\
+  			',
+  			//ref 被用来给元素或子组件注册引用信息。
+  			//    引用信息会根据父组件的 $refs 对象进行注册。
+  			//    如果在普通的DOM元素上使用，引用信息就是元素; 
+  			//    如果用在子组件上，引用信息就是组件实例:
+  			props: {
+  				value: {
+  					type: Number,
+  					default: 0
+  				},
+  				label: {
+  					type: String,
+  					default: ''
+  				}
+  			},
+  			mounted: function(){
+  				this.formatValue();
+  			},
+  			methods: {
+  				updateValue: function(value){
+  					//保留两位小数
+  					var result = currencyValidator.parse(value, this.value);
+  					//如果值不统一，手动覆盖以保持一致
+  					if(result.warning){
+        				this.$refs.input.value = result.value
+      				}
+      				this.$emit('input', result.value)
+  				},
+  				formatValue: function(){
+  					this.$refs.input.value = currencyValidator.formate(this.value);
+  				},
+  				selectAll: function(event){
+  					setTimeout(function(){
+  						event.target.select();
+  					},0);
+  				}
+  			}
+		});
+		new Vue({
+			el: '#app21',
+			data: {
+				price: 0,
+				shipping: 0,
+				handling: 0,
+				discount: 0
+			},
+			computed: {
+				total: function(){
+					return ((this.price*100 + this.shipping*100 + this.handling*100 - this.discount*100)/100).toFixed(2);
+				}
+			}
+		});
+
+	</script> -->
+</body>
+</html>

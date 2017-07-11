@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>v-bind</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<style>
+		.classA{color:red;}
+		.classB{color:green;font-size:20px;}
+	</style>
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>v-bind: 绑定标签的属性,v-bind:可以直接用 : 代替</h1>
+	<div id="app">
+		<img v-bind:src="imgSrc" :width="wid"/>
+
+		<h3 :class="classN">1.绑定class</h3>
+		<h3 :class="{classA:colorOr}">2.绑定的class中的判断</h3>
+		<!-- 对style中的.classA进行判断 -->
+		<h3 :class="[classA,classB]">3.绑定class中使用数组</h3>
+		<h3 :class="[colorOr?classA:classB]">4.绑定class中使用三元表达式</h3>
+		<h3 :class="[{classA:colorOr},classB]">5.绑定class中使用判断组合</h3>
+		<br>
+		<!-- sytle绑定不支持 xxx-xxx写法，要变成驼峰式写法，key是css里面的样式属性，但是value必须是data中的数据，而不是css的value -->
+		<h3 :style="{color:green,fontSize:font}">6.style绑定</h3>
+		<h3 :style="fontArray">7.style绑定数组</h3>
+		<div class="static" :class="{active:isActive,'text-danger':hasError}">tttt</div>
+		<h3>class用在组建上</h3>
+		<my-component class="fuck"></my-component>
+	</div>
+	
+	<script>
+		Vue.component('myComponent',{
+			template: '<p class="bar">FUCK</p>'
+		});
+		
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				imgSrc: 'https://vuefe.cn/images/logo.png',
+				wid: '50',
+				classN: 'classB',
+				colorOr: true,
+				classA:'classA',
+				classB:'classB',
+				green: 'green',
+				font: '30px',
+				fontArray:{
+					color: 'orange',
+					fontSize: '12px' // 必须驼峰式写法
+				},
+				isActive: true,
+				hasError: false
+			}
+		});
+		
+	</script>
+</body>
+</html>

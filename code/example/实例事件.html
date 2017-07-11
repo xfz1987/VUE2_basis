@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>实例事件</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>实例事件</h1>
+	<div id="app">
+		{{ a }}
+		<p><button @click="add">+</button></p>
+	</div>
+
+	<p><button onclick="struct()">-</button></p>
+	<p><button onclick="off()">卸载事件</button></p>
+	
+	<script>
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				a: 1
+			},
+			methods: {
+				add: function(){
+					this.a++;
+				}
+			}
+		});
+
+		//$on 给构造器添加事件 $once 只添加一次,只能执行一次
+		vw.$on('jian',function(num){
+			console.log('执行了减');
+			this.a -= num;
+		});
+
+		function struct(){
+			//触发构造器的事件
+			vw.$emit('jian','2');
+			//--vw.a;//还是这样方便
+		}
+
+		function off(){
+			//卸载事件
+			vw.$off('jian');
+		}
+	</script>
+</body>
+</html>

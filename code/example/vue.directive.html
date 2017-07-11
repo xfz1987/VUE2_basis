@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Vue.directive</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>Vue.directive 自定义指令</h1>
+	<div id="app">
+		<!-- 可以绑定多个属性 -->
+		<div v-my.color.fontSize="yanse" id="test">
+			{{ num }}
+		</div>
+		<p>
+			<button @click="add">+</button>
+		</p>
+	</div>
+	
+	<button onclick="uninstall()">卸载</button>
+	<script>
+		//自定义指令（生命周期 5个）
+		Vue.directive('my',{
+			bind: function(el, binding, vmode){//被指令绑定的node实体、 绑定的内容， 
+				console.log('1 - bind：被绑定');
+				// var s = JSON.stringify;
+				// el.innerHTML= 
+				// 	'name:' + s(binding.name) + '<br>' +  //my
+				// 	'value:' + s(binding.value) + '<br>' + //red
+				// 	'expression:' + s(binding.expression) + '<br>' + 
+				// 	'argument:' + s(binding.arg) + '<br>' +
+				// 	'modifiers:' + s(binding.modifiers) + '<br>' + {"color":true,"fontsize":true}
+				// 	'vmode keys:' + Object.keys(vmode).join(', ') ;
+				
+				el.style.color = binding.value;
+			},
+			inserted: function(){
+				console.log('2 - inserted：绑定到节点');
+			},
+			update: function(el, binding, vmode){
+				console.log('3 - update：组件更新前');
+				el.style.color = 'green';
+			},
+			componentUpdated: function(){
+				console.log('4 - componentUpdated：组件更新完成');
+			},
+			unbind: function(){
+				console.log('5 - unbind：卸载|解绑');
+			}
+		});
+
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				num: 10,
+				yanse: 'red'
+			},
+			methods: {
+				add(){
+					this.num++;
+				}
+			}
+		});	
+
+		function uninstall(){
+			//把整个app从vue分离了
+			vw.$destroy();
+		}
+
+
+	</script>
+</body>
+</html>

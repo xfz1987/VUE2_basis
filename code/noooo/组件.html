@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>声明式渲染</title>
+</head>
+<body>
+	<h1 style="color:red;">组件</h1>
+	<div id="app">
+		<ol>
+			<todo-item v-for="item in items" v-bind:todo="item"></todo-item>
+		</ol>
+	</div>
+
+	<h1 style="color:red;">组件模板</h1>
+	<div id="app-2">
+		<my-counter heading="Likes" color="green"></my-counter>
+		<my-counter heading="Dislikes" color="red"></my-counter>
+	</div>
+	
+	<template id="counter-template">
+		<h1>{{heading}}</h1>
+		<button @click="count++" style="background:{{color}}">{{count}}</button>
+	</template>
+
+	<script src="vue.js"></script>
+	<script>
+		Vue.component('todo-item',{
+			props:['todo'],
+			template:'<li>{{todo.text}}</li>'
+		});
+
+
+		var app = new Vue({
+			el : '#app',
+			data:{
+				items:[
+					{text:'ai'},
+					{text:'vr'},
+					{text:'vm'}
+				]
+			}
+		})
+
+		// 注册组件
+		// 浏览器再解析<my-counter>标签时，会找到注册的组件，
+		// 并将里面template的内容替换my-counter
+		Vue.component('my-counter',{
+			template : '#counter-template',
+			props : ['heading','color'],
+			data : function(){
+				return {count : 0};
+			}
+		});
+
+		var app2 = new Vue({
+			el : '#app-2'
+		})
+	</script>
+</body>
+</html>

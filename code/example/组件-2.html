@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>组件-2</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>组件-2 component - props：传值只能从父组件向子组件单向传值，不能反过来</h1>
+	<div id="app">
+		<world :my-here="1"></world>
+		<!-- 注意 my-here的值以字符串 "1" 而不是以实际的数字传下去 -->
+		<!-- 如果想传递一个实际的数字, 需要使用v-bind-->
+		<hello sex="boy"></hello>
+		<!--动态props-->
+		<input type="text" v-model="message">
+		<son :who="message"></son>
+	</div>
+	<template id="demo1">
+		<div>I am a {{ sex }}</div>
+	</template>
+	<template id="demo2">
+		<div>I am {{ who }}</div>
+	</template>
+
+	<h2>组件属性不建议使用 - 的形式书写，因为vue中js代码需要转化成驼峰式书写</h2>
+	<script>
+		var worldWord = {
+			template: '<div>I am {{ myHere }}</div>',
+			props: ['myHere']
+		};
+		var helloWord = {
+			template: '#demo1',
+			props: ['sex']
+		};
+		var whoWord = {
+			template: '#demo2',
+			props: ['who']
+		};
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				message: 'a template'
+			},
+			components: {
+				'world': worldWord,
+				'hello': helloWord,
+				'son' : whoWord
+			}
+		});
+	</script>
+
+	<hr>
+
+	<h3>传值验证</h3>
+	<div id="app1">
+		<check :pval="test"></check>	
+	</div>
+
+	<script>
+		
+
+		/**
+		 * 传值验证
+		 * 
+		 * propA: Number,                        - 基础类型检测（'null' 表示任何类型都可以）
+		 * propB: [String, Number],              - 多种类型
+		 * propC: {type: String,required: true}, - 必传且是字符串
+		 * propD: {type: Number,default: 100},   - 数字，没传值，则有默认值
+		 * propE: {   
+	    		type: Object,
+	    		default: function(){
+	    			return {message: 'hello'}
+	    		}
+	    	},                                   - 数组/对象的默认值应当由一个工厂函数返回
+		 * propF: {
+	    		validator: function(value){
+	    			return value > 10;
+	    		}
+	    	}                                    - 自定义验证函数
+		 */
+
+		var checkDm = {
+			template: '<div>this is {{ pval }}</div>',
+			props: {
+				pval: {
+					type: Number,
+					required: true,
+					validator: function(value){
+						return value >= 5;
+					}
+				}
+			}
+		}
+		var vw1 = new Vue({
+			el: '#app1',
+			data: {
+				test: 1
+			},
+			components: {
+				'check': checkDm
+			}
+		});
+
+	</script>
+</body>
+</html>

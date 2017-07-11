@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>v-model</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>v-model</h1>
+	<div id="app">
+		<p>原始文本：{{message}}</p>
+		<h3>文本框</h3>
+		<p>v-model: <input type="text" v-model="message"></p>
+		
+		<p>修饰符</p>
+		<p>v-model.lazy: <input type="text" v-model.lazy="message"> </p>
+		<h2>
+			懒加载的，当改变文本框时，原始文本不变，当文本框失去焦点时，原始文本才会变化<br>
+			应用: 收索框，当失去输入完，才向后台发送请求数据
+		</h2>
+		<p>v-model.number: <input type="text" v-model.number="message"> </p>
+		<h2>
+			这样就不需要自己处理将字符串转换成数字格式了，便于计算
+		</h2>
+		<p>v-model.trim: <input type="text" v-model.trim="message"> </p>
+		<h2>老师司机都懂</h2>
+		<hr>
+
+		<h3>文本区域</h3>
+		<textarea cols="30" rows="10" v-model="message"></textarea>
+		<textarea cols="30" rows="10">{{message}}</textarea>
+		<h2 style="color:red">如果利用插值{{}}写法插值到textarea，那么只能加载一次，而不能和model绑定，</h2>
+		
+		<h3>checkbox</h3>
+		<p>
+			<input type="checkbox" id="c1" v-model="xz">
+			<label for="c1">{{xz}}</label>
+		</p>
+		<h3>多个checkbox绑定一个数组</h3>
+		<p>
+			<input type="checkbox" id="a1" value="Jack" v-model="arr">
+			<label for="a1">Jack</label>
+			<input type="checkbox" id="a2" value="Lucy" v-model="arr">
+			<label for="a2">Lucy</label>
+			<input type="checkbox" id="a3" value="Marry" v-model="arr">
+			<label for="a3">Marry</label>
+			<p>{{arr}}</p>
+		</p>
+
+		<h3>单选按钮</h3>
+		<input type="radio" id="r1" value="male" v-model="rat">
+		<label for="r1">男</label>
+		<input type="radio" id="r2" value="female" v-model="rat">
+		<label for="r2">女</label>
+		<p>{{rat}}</p>
+
+		<h3>选择列表</h3>
+		<select v-model="sel">
+			<option value="z1">a</option>
+			<option value="z2">b</option>
+			<option value="z3">c</option>
+		</select>
+		<p>{{sel}}</p>
+		<select v-model="ran" multiple>
+			<option>a</option>
+			<option>b</option>
+			<option>c</option>
+		</select>
+		<p>{{ran}}</p>
+
+		<h3>v-for填充select</h3>
+		<select v-model="res">
+			<option v-for="opt in opts" :value="opt.value">{{opt.text}}</option>
+		</select>
+		<p>{{res}}</p>
+	</div>
+	
+	<script>
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				message: 'Hello Vue',
+				xz: true,
+				arr: [],
+				rat: '',
+				sel:'',
+				ran:[],
+				opts: [
+						{text:'basketball',value:'A'},
+						{text:'football',value:'B'},
+						{text:'pingpang',value:'C'}
+					],
+				res:'A'
+			}
+		});	
+	</script>
+</body>
+</html>

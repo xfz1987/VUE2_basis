@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>other</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>其他指令</h1>
+	<div id="app">
+		<h3>v-pre 显示源码</h3>
+		<p v-pre>{{message}}</p>
+		<hr>
+		<h3 v-cloak>v-cloak 在浏览器渲染完成之前，你是看不见我的,</h3>
+		<h2>v-cloak与display:none配合使用的,要在style中写[v-cloak]{display:none;}，然后标签绑定v-cloak指令，
+			<span style="color:red">注意：style一定要放在script前</span>
+		</h2>
+		<hr>
+		<h3>v-once只绑定一次</h3>
+		<p v-once>原先输入的是:{{message}}</p>
+		<textarea v-model="message"></textarea>
+	</div>
+	<style>
+		[v-cloak]{display:none;}
+	</style>
+	<script>
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				message: 'Hello Vue'
+			}
+		});	
+	</script>
+</body>
+</html>

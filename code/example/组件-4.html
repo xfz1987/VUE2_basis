@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>组件-4 Vue自定义标签</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>component 标签-4 Vue自定义标签:动态改变模板</h1>
+	<div id="app">
+		<component :is="who"></component>
+	</div>
+	<h2>is是Vue自定义的指令 :is="" 表示component绑定的是哪个模板</h2>
+	<h2>组件里面的data必须是函数</h2>
+	<!-- -->
+
+	<script>
+		var pA = {
+			template: '<div>this is pA {{ a }}</div>',
+			data: function(){
+				return {
+					a: 1
+				}
+			}
+		};
+		var pB = {
+			template: '<div>this is pB</div>'
+		};
+		var pC = {
+			template: '<div>this is pC</div>'
+		};
+		var pD = {
+			template: '<div>this is pD</div>'
+		};
+
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				who: 'pC',
+			},
+			components: {
+				'pA': pA,
+				'pB': pB,
+				'pC': pC,
+				'pD': pD
+			}
+		});	
+	</script>
+</body>
+</html>

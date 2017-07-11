@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>实例方法</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>实例方法</h1>
+	
+	<p>
+		<button onclick="destroy()">卸载</button>
+		<button onclick="refresh()">刷新</button>
+		<button onclick="modify()">修改</button>
+	</p>
+	<div id="app">
+		
+	</div>
+	
+	<script>
+		var header_a = Vue.extend({
+			template: '<p>{{message}}</p>',
+			data: function(){
+				return {
+					message: 'Hello I am a header'
+				}
+			},
+			destroyed: function(){
+				alert('Vue is destroyed');
+			},
+			updated: function(){
+				alert('Vue is updated');
+			}
+		});
+
+		var vm = new header_a().$mount('#app');
+
+		function destroy(){
+			vm.$destroy();
+		}
+
+		function refresh(){
+			vm.$forceUpdate();//迫使Vue实例重新渲染
+		}
+
+		function modify(){
+			vm.message = 'data is modified';
+			//在修改数据之后立即使用它，然后等待 DOM 更新, 再执行回调
+			vm.$nextTick(function(){
+				alert('after modified, I am be called');
+			});
+		}
+
+	</script>
+</body>
+</html>

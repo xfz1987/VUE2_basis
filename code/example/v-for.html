@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>v-for</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>v-for : 2.0到1.0可以运行，而1.0到2.0不能运行</h1>
+	<div id="app">
+		<ul>
+			<!-- <li v-for="stu in students">{{stu}}</li> -->
+			<li v-for="stu in _students">{{ stu }}</li>
+		</ul>
+		<br>
+		<ul>
+			<!-- index 表示数组的下标 -->
+			<li v-for="(sb,index) in devst">{{ index }} : {{ sb.name }} - {{ sb.age }}</li>
+		</ul>
+		
+		<h3>模板的v-for</h3>
+		<ul class="demo">
+			<template v-for="item in items">
+				<li>{{ item.name }}</li>
+				<li class="divider">{{ item.sex }}</li>
+			</template>
+		</ul>
+
+		<h3>用 v-for 通过一个对象的属性来迭代，不建议这么使用，它的结果可能在不同的 JavaScript 引擎下是不一致的</h3>
+		<ul>
+			<li v-for="v in obj">{{ v }}</li>
+		</ul>
+		<ul>
+			<li v-for="(k,v) in obj">{{k}} : {{v}}</li>
+		</ul>
+
+		<h3>v-for 也可以取整数，应用：重复多次模板</h3>
+		<div>
+			<span v-for="n in 10">{{ n }}</span>
+		</div>
+	</div>
+
+	<h3>组件和v-for、传值</h3>
+	<div id="todo">
+  		<input
+  		  v-model="newTodoText"
+  		  v-on:keyup.enter="addNewTodo"
+  		  placeholder="Add a todo"
+  		>
+<!-- 		<ul>
+			<li v-for="(todo,index) in todos">
+				{{todo}}
+				<button @click="todos.splice(index,1)">X</button>
+			</li>
+		</ul> -->
+  		<ul>
+  		  <li
+  		    is="todo-item"
+  		    v-for="(todo, index) in todos"
+  		    v-bind:title="todo"
+  		    v-on:remove="todos.splice(index, 1)"
+  		  ></li>
+  		</ul>
+	</div>
+
+	<h3>v-for循环中使用method</h3>
+	<div id="app2">
+		<ul>
+			<li v-for="n in even(numbers)">{{ n }}</li>
+		</ul>
+	</div>
+
+	<style>
+		.demo{overflow:hidden;}
+		.demo li{float:left;margin-right:10px;}
+		.demo li.divider+li{clear:left;}
+	</style>
+	
+	<script>
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				students: [9,2,4,5,1,3],
+				infos:[
+					{name:'xg',age:18},
+					{name:'ff',age:15},
+					{name:'bb',age:7},
+					{name:'ww',age:20}
+				],
+				items: [
+					{name: '小明',sex: '男孩'},
+					{name: '小花',sex: '女孩'}
+				],
+				obj: {
+					firstName: 'G',
+					lastName: 'zf',
+					age: 29
+				}
+			},
+			computed: {
+				// students:function(){
+				// 	return this.students.sort();//Error when rendering root instance: 
+				   //Vue数据机制：要保证原始数据不被污染，而我们这里是通过编程排序，而不是直接赋值的，
+				   //会照成原始数据污染，所以报错
+				//}
+				//解决
+				//给computed中的students变一个名字，_students,同时v-for="stu in _students"
+				_students: function(){
+					return this.students.sort(function(a,b){return a-b;});//this表示整个vm实例
+				},
+				devst: function(){
+					return sortMyKey(this.infos,'age');//按照age排序
+				}
+			}//computed发生在内容呈现之前进行的处理
+		});	
+
+		function sortMyKey(arr,key){
+			return arr.sort(function(a,b){
+				var x = a[key];var y = b[key];
+				return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+			});
+		}
+
+		// 不能自动传递数据到组件里，因为组件有自己独立的作用域。为了传递迭代数据到组件里，我们要用 props
+		Vue.component('todo-item', {
+  			template: '\
+  			  <li>\
+  			    {{ title }}\
+  			    <button v-on:click="$emit(\'remove\')">X</button>\
+  			  </li>\
+  			',
+  			props: ['title']
+		});
+
+		var vm = new Vue({
+		  	el: '#todo',
+		  	data: {
+		  	  newTodoText: '',
+		  	  todos: [
+		  	    'Do the dishes',
+		  	    'Take out the trash',
+		  	    'Mow the lawn'
+		  	  ]
+		  	},
+		  	methods: {
+		  	  addNewTodo: function () {
+		  	    if(this.newTodoText){
+		  	    	this.todos.push(this.newTodoText);
+		  	    	this.newTodoText = '';	
+		  	    }
+		  	  }
+		  	}
+		});
+
+		var vh = new Vue({
+			el: '#app2',
+			data: {
+				numbers: [1,2,3,4,5]
+			},
+			methods: {
+				even: function(numbers){
+					return numbers.filter(function(index) {
+						return index % 2 === 0;
+					});
+				}
+			}
+		});
+
+	</script>
+</body>
+</html>

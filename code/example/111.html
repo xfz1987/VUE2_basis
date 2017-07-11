@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>构造器生命周期</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>构造器生命周期  10个</h1>
+	<div id="app">
+		<button @click="test"></button>
+	</div>
+
+	<script>
+		var cust = [{name:'aa',age:'28'},{name:'bb',age:'30'}];
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				totalData: cust
+			},
+			methods: {
+				test(){
+					console.log(this.totalData);
+				}
+			}
+		});
+	</script>
+</body>
+</html>

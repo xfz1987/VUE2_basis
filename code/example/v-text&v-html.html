@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>v-text & v-html.html</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>v-text & v-html.html : 插值</h1>
+	<div id="app">
+		<p>{{ msg }}</p>
+		<p v-text="msg"></p>
+		<div v-text="msgHtml"></div>
+		<div v-html="msgHtml"></div>
+	</div>
+	
+	<h2>
+		v-text用于插入纯文本，会将标签作为文本一起插入到页面中，<br>
+		v-html插入文本和html代码	
+	</h2>
+
+	<script>
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				msg:'hello Vue!',
+				msgHtml:'<h1>hello girl!</h1>'
+			}
+		});	
+	</script>
+</body>
+</html>

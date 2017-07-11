@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>computed</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>computed</h1>
+	<div id="app">
+		<p>原价：{{ yuanjia }}</p>
+		<p>折扣：{{ zhekou }}</p>
+		<p>现价：{{ xianjia }}</p>
+		<p><button @click="add">+</button></p>
+	</div>
+	
+	<script>
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				yuanjia: 10,
+				zhekou: 0.7
+			},
+			computed: {//数据计算
+				xianjia: function(){
+					return '￥' + this.yuanjia * this.zhekou;
+				}
+			},
+			methods: {
+				add(){
+					this.yuanjia++;
+				}
+			}
+		});	
+	</script>
+
+	<h3>计算属性默认只有 getter ，而且会自动执行get方法，不过在需要时可以提供一个setter</h3>
+	<div id="app1">
+		<p>{{ firstName }}</p>
+		<p>{{ lastName }}</p>
+		<p>{{ fullName }}</p>
+	</div>
+	<script>
+		var vb = new Vue({
+			el: '#app1',
+			data:{
+				firstName: 'Josh',
+				lastName: 'Groge'
+			},
+			computed: {
+				// fullName: function(){
+				// 	return this.firstName + ' ' + this.lastName; 
+				// }
+				fullName: {
+					get: function(){
+						return this.firstName + ' ' + this.lastName; 
+					},
+					set: function(newVal){
+						var names = newVal.split(' ');
+						this.firstName = names[0];
+						this.lastName = names[names.length -1];
+					}
+				}
+			}
+		});
+		console.log(vb);
+		vb.fullName = 'Fucking boy';
+	</script>
+</body>
+</html>

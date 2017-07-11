@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>methods</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>methods</h1>
+	<div id="app">
+		{{ a }}
+		<!-- <p><button @click="a++">+</button></p> -->
+		<p><button @click="add(2,$event)">+</button></p>
+	</div>
+	<script>
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				a: 1
+			},
+			methods: {
+				add(num,event){
+					console.log(event);//MouseEvent {isTrusted: true, screenX: 46, screenY: 268, clientX: 38, clientY: 133…}
+					num ? this.a += num : this.a++;
+				}
+			}
+		});
+	</script>
+	<hr>
+
+	<div id="app1">
+		{{ a }}
+		<p><btn @click.native="add"></btn></p>
+		<!-- click.native 绑定methods中的事件，不是什么他妈的原生事件-->
+		<p><button onclick="addy()">这才是原生事件绑定：构造器内部访问外部的原生方法</button></p>
+	</div>
+
+	<button onclick="vw1.add()">外部访问构造器内部的方法</button>
+	
+	<script>
+		//这才叫原生事件
+		function addy(){
+			vw1.a ++;
+		}
+
+		var btn = {
+			template: '<button>外部组件本地事件绑定</button>'
+		}
+
+		var vw1 = new Vue({
+			el: '#app1',
+			data: {
+				a: 1
+			},
+			methods: {
+				add(){
+					this.a++;
+				}
+			},
+			components: {
+				'btn': btn
+			}
+		});
+
+	</script>
+</body>
+</html>

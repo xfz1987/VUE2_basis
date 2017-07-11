@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>实例属性</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+	<script src="../assets/js/jquery.min.js"></script>
+</head>
+<body>
+	<h1>实例属性：对外的属性接口</h1>
+	<div id="app">
+		{{ message }}
+	</div>
+	
+	<h2>jquery可以使用的地方: 生命周期mounted、updated及methods中</h2>
+
+	<script>
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				message: 'hello Vue!'
+			}
+			//内部操作
+			// ,mounted: function(){
+			// 	$('#app').text('Jquery is here');
+			// }
+			,methods: {
+				add: function(){
+					this.message = 'bye';
+				}
+			}
+		});
+		console.log(vw);//vue构造器
+		console.log(vw.message)//hello Vue!
+		console.log(vw.$el);//当前构造器的实际Node
+		console.log(vw.$options);
+		console.log(vw.$isServer);//当前 Vue 实例是否运行于服务器。
+		vw.add();
+
+	</script>
+</body>
+</html>

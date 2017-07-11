@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Template 模板</title>
+	<link rel="stylesheet" href="../assets/css/index.css">
+	<script src="../assets/js/vue.js"></script>
+</head>
+<body>
+	<h1>Template 模板</h1>
+	<div id="app">
+		<p></p>
+		<h1>123213213</h1>
+	</div>
+
+	<template id="demo1">
+		<h3 style="color:red;">我是标签模板</h1>
+	</template>
+
+	<script type="x-template" id="demo2">
+		<h3 style="color:red;">我是script标签模板</h1>
+	</script>
+
+	<script>
+		var vw = new Vue({
+			el: '#app',
+			data: {
+				
+			},
+			// template: `
+			// 	<h3 style="color:red;">我是选项模板</h1>
+			// `
+			template: '#demo1'
+			
+
+		});	
+	</script>
+</body>
+</html>
